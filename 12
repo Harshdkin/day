@@ -1,0 +1,34 @@
+#include <studio.h>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+class Solution {
+public:
+    bool backtrack(vector<int>&nums,int index, vector<int>&count)
+    {
+        if(index==nums.size()-1)
+            return true;
+        if(index>=nums.size())
+            return false;
+        if(count[index]==1)
+            return false;
+        bool res{false};
+        count[index]=1;
+        for(int i=nums[index];i>0;i--)
+        {
+            index+=i;
+            res=res|backtrack(nums,index,count);
+            if(res)
+                return true;
+            index-=i;
+        }
+        return res;
+    }
+    bool canJump(vector<int>& nums) {
+        if(nums.size()<2)
+            return true;
+        int n=nums.size();
+        vector<int>count(n,0);
+        return backtrack(nums,0,count);
+    }
+}
