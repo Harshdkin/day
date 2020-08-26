@@ -1,0 +1,27 @@
+#include <algorithm>
+#include <cstdlib>
+#include <iostream>
+#include <vector>
+
+using std::vector;
+
+class Solution {
+public:
+  bool searchMatrix(vector<vector<int>> &matrix, int target) {
+    if (matrix.empty() || matrix[0].empty()) {
+      return false;
+    }
+    auto row_it =
+        std::lower_bound(matrix.begin(), matrix.end(), target,
+                         [](const vector<int> &row, const int target) {
+                           return row[0] < target;
+                         });
+    if (row_it == matrix.begin()) {
+      return matrix[0][0] == target;
+    } else if (row_it != matrix.end() && (*row_it)[0] == target) {
+      return true;
+    }
+    --row_it;
+    return std::binary_search(row_it->begin(), row_it->end(), target);
+  }
+};
